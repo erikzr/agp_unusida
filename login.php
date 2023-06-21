@@ -41,7 +41,7 @@ if(isset($_POST['login'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login Pesbuk</title>
+    <title>Aplikasi Galeri Pengumuman</title>
 <!-- Font Icon -->
 <link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
@@ -68,7 +68,7 @@ if(isset($_POST['login'])){
                         </div>
                     </form>
                     <p class="loginhere">
-                        Have already an account ? <a href="login.php" class="loginhere-link">Login here</a>
+                        Belum Punya Akun ? <a href="register.php" class="loginhere-link">daftar disini</a>
                     </p>
                 </div>
             </div>
@@ -77,6 +77,7 @@ if(isset($_POST['login'])){
 
         <div class="col-md-6">
             <!-- isi dengan sesuatu di sini -->
+           <p>halo halo</p>
         </div>
 
     </div>
