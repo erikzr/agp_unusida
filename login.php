@@ -42,38 +42,38 @@ if(isset($_POST['login'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login Pesbuk</title>
+<!-- Font Icon -->
+<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
+
 </head>
-<body class="bg-light">
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-
-        <p>&larr; <a href="index.php">Home</a>
-
-        <h4>Masuk ke Pesbuk</h4>
-        <p>Belum punya akun? <a href="register.php">Daftar di sini</a></p>
-
-        <form action="" method="POST">
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input class="form-control" type="text" name="username" placeholder="Username atau email" />
+<body>
+<div class="main">
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" action="" id="signup-form" class="signup-form">
+                        <h2 class="form-title">Login</h2>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="username" id="username" placeholder="Username" value=""/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
+                            <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="login" id="submit" class="form-submit" value="Masuk"/>
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Have already an account ? <a href="login.php" class="loginhere-link">Login here</a>
+                    </p>
+                </div>
             </div>
-
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input class="form-control" type="password" name="password" placeholder="Password" />
-            </div>
-
-            <input type="submit" class="btn btn-success btn-block" name="login" value="Masuk" />
-
-        </form>
-            
-        </div>
+        </section>
+    </div>
 
         <div class="col-md-6">
             <!-- isi dengan sesuatu di sini -->

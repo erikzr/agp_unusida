@@ -1,38 +1,53 @@
 <?php
-
 require_once("config.php");
 
-if(isset($_POST['register'])){
+// Inisialisasi variabel
+$name = "";
+$username = "";
+$password = "";
+$email = "";
+$errorMessage = "";
 
-    // filter data yang diinputkan
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Filter data yang diinputkan
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-    // enkripsi password
+    // Enkripsi password
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
+    // Validasi username
+    if (strlen($username) !== 8) {
+        $errorMessage = "Username harus terdiri dari 8 karakter.";
+    }
 
-    // menyiapkan query
-    $sql = "INSERT INTO users (name, username, email, password) 
-            VALUES (:name, :username, :email, :password)";
-    $stmt = $db->prepare($sql);
+    // Jika tidak ada kesalahan, simpan data
+    if ($errorMessage === "") {
+        // Menyiapkan query
+        $sql = "INSERT INTO users (name, username, email, password) 
+                VALUES (:name, :username, :email, :password)";
+        $stmt = $db->prepare($sql);
 
-    // bind parameter ke query
-    $params = array(
-        ":name" => $name,
-        ":username" => $username,
-        ":password" => $password,
-        ":email" => $email
-    );
+        // Bind parameter ke query
+        $params = array(
+            ":name" => $name,
+            ":username" => $username,
+            ":password" => $password,
+            ":email" => $email
+        );
 
-    // eksekusi query untuk menyimpan ke database
-    $saved = $stmt->execute($params);
+        // Eksekusi query untuk menyimpan ke database
+        $saved = $stmt->execute($params);
 
-    // jika query simpan berhasil, maka user sudah terdaftar
-    // maka alihkan ke halaman login
-    if($saved) header("Location: login.php");
+        // Jika query simpan berhasil, alihkan ke halaman login
+        if ($saved) {
+            header("Location: login.php");
+            exit();
+        } else {
+            $errorMessage = "Gagal menyimpan data. Silakan coba lagi.";
+        }
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -42,54 +57,55 @@ if(isset($_POST['register'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register Pesbuk</title>
+<!-- Font Icon -->
+<link rel="stylesheet" href="fonts/material-icon/css/material-design-iconic-font.min.css">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+<!-- Main css -->
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-light">
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-
-        <p>&larr; <a href="index.php">Home</a>
-
-        <h4>Bergabunglah bersama ribuan orang lainnya...</h4>
-        <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
-
-        <form action="" method="POST">
-
-            <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input class="form-control" type="text" name="name" placeholder="Nama kamu" />
+<body>
+    <div class="main">
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" action="" id="signup-form" class="signup-form">
+                        <h2 class="form-title">Create account</h2>
+                        
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="name" id="name" placeholder="Your Name" value="<?php echo $name; ?>"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="username" id="username" placeholder="Username" value="<?php echo $username; ?>"/>
+                            <?php if(!empty($errorMessage)): ?>
+                            <div class="form-group">
+                                <p style="color: red;"><?php echo $errorMessage; ?></p>
+                            </div>
+                        <?php endif; ?>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" name="email" id="email" placeholder="Your Email" value="<?php echo $email; ?>"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" id="password" placeholder="Password"/>
+                            <span toggle="#password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                            <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="register" id="submit" class="form-submit" value="Daftar"/>
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Have already an account ? <a href="login.php" class="loginhere-link">Login here</a>
+                    </p>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input class="form-control" type="text" name="username" placeholder="Username" />
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input class="form-control" type="email" name="email" placeholder="Alamat Email" />
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input class="form-control" type="password" name="password" placeholder="Password" />
-            </div>
-
-            <input type="submit" class="btn btn-success btn-block" name="register" value="Daftar" />
-
-        </form>
-            
-        </div>
-
-        <div class="col-md-6">
-            <img class="img img-responsive" src="img/connect.png" />
-        </div>
-
+        </section>
     </div>
-</div>
-
+<!-- JS -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
